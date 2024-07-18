@@ -13,22 +13,25 @@ for number in range(1, 13):
 #second task 
 #2. Создайте декоратор, который измеряет время выполнения функции.
 import time
+from functools import wraps
 
-def time_of_function(func):
-   def wrapper():
-      t1 = time.time()
-      func()
-      t2 = time.time()
-      result = t2 - t1 
-      print (f"Работа заняла {result} секунд")
-      return result
-   return wrapper
-@time_of_function
+def timing_decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        t1 = time.time()
+        result = func(*args, **kwargs)
+        t2 = time.time()
+        elapsed_time = t2 - t1
+        print(f"Время выполнения функции {elapsed_time:} секунд")
+        return result
+    return wrapper
+
+@timing_decorator
 def func_one():
-   my_list = [x for x in range(1, 100000)]
+    my_list = [x for x in range(1, 100000)]
 
 func_one()
-pass
+
 
 #three task
 #3.Создайте декоратор, который проверяет типы аргументов функции и выбрасывает исключение, если типы неверны.
